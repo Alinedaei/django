@@ -1,4 +1,4 @@
-# django
+# django-docker
 
 django-admin startproject myproject
 
