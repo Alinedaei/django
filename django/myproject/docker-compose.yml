@@ -3,7 +3,7 @@ version: '3'
 services:
   web:
     build: .
-    command: bash -c "python manage.py migrate && gunicorn your_project.wsgi:application -b 0.0.0.0:8000"
+    command: bash -c "python manage.py migrate && gunicorn myproject.wsgi:application -b 0.0.0.0:8000"
     volumes:
       - .:/app
     ports:
@@ -21,7 +21,7 @@ services:
     image: "redis:alpine"
   celery:
     build: .
-    command: celery -A myproject worker -l info
+    command:  celery -A myproject worker --loglevel=info
     volumes:
       - .:/app
     depends_on:

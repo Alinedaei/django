@@ -20,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'y(d^j^0g+pet7$z1n*v2eabu_y8i^=#iev!$c_q8pwvb(tiohq'
+SECRET_KEY = 'f5-_+nwv&i8=!$9_hqv@m#d34^&bcryl!@^$z=f0!@de^d!wg#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.10.161']
+ALLOWED_HOSTS = ['192.168.10.166']
 
 
 # Application definition
@@ -118,8 +118,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-# settings.py
-
-CELERY_BROKER_URL = 'redis://redis:6379/0'
-CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
-

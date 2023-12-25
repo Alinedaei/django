@@ -13,9 +13,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Make port 8000 available to the world outside this container
 EXPOSE 8000
 
+RUN pip install gunicorn
+
+
 # Define environment variable
 ENV NAME World
 
-# Run app.py when the container launches
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Run Gunicorn with the specified config file and application
+CMD ["gunicorn", "-c", "gunicorn_config.py", "myproject.wsgi:application", "--bind", "0.0.0.0:8000"]
 
