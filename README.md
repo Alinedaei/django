@@ -4,7 +4,7 @@ django-admin startproject myproject
 
 cd myproject
 
-docker-compose build
+docker-compose  up --build
 
 
 docker-compose up
