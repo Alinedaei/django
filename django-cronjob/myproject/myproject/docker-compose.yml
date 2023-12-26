@@ -1,0 +1,82 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    command: bash -c "python manage.py migrate && gunicorn myproject.wsgi:application -b 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+      - rabbitmq
+    networks:
+      - my_network  # اضافه کردن شبکه به سرویس وابسته
+
+  db:
+    image: postgres:13.3
+    environment:
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - my_network  # اضافه کردن شبکه به سرویس وابسته
+
+  redis:
+    image: "redis:alpine"
+    networks:
+      - my_network  # اضافه کردن شبکه به سرویس وابسته
+
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    container_name: "my_rabbitmq"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: "your_username"
+      RABBITMQ_DEFAULT_PASS: "your_password"
+    networks:
+      - my_network
+
+  celery:
+    build: .
+    command: celery -A myproject worker --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+      - rabbitmq
+    networks:
+      - my_network  # اضافه کردن شبکه به سرویس وابسته
+
+  celery-beat:
+    build: .
+    command: celery -A myproject beat -l info
+    volumes:
+      - .:/app
+    depends_on:
+      - celery
+    networks:
+      - my_network  # اضافه کردن شبکه به سرویس وابسته
+
+  flower:
+    image: python:3.8
+    command: sh -c "pip install flower && flower -A myproject --port=5555"
+    ports:
+      - "5555:5555"
+    depends_on:
+      - celery
+    networks:
+      - my_network  # اضافه کردن شبکه به سرویس وابسته
+
+networks:
+  my_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+
