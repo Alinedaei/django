@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  django:
+    image: django-cronjob-docker:latest
+    deploy:
+      replicas: 1
+    networks:
+      - webnet
+
+  nginx:
+    image: nginx:latest
+    deploy:
+      replicas: 1
+    ports:
+      - "80:80"
+    networks:
+      - webnet
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+
+networks:
+  webnet:
+
