@@ -9,6 +9,6 @@ docker-compose  up --build
 
 docker-compose up
 
-python manage.py migrate
+python3 manage.py migrate
 
-python manage.py createsuperuser
+python3 manage.py createsuperuser
