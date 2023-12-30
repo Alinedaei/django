@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+      - rabbitmq
+      - auth
+    networks:
+      - my_network
+
+  auth:
+    build: .
+    command: bash -c "node auth"
+    volumes:
+      - .:/app
+    networks:
+      - my_network
+
+  db:
+    image: mariadb
+    container_name: my_mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: Aa@123456
+      MYSQL_DATABASE: mon
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: Aa@123456
+    networks:
+      - my_network
+
+  redis:
+    image: "redis:alpine"
+    networks:
+      - my_network
+
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    container_name: "new_rabbitmq_name"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: "admin"
+      RABBITMQ_DEFAULT_PASS: "7676"
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge
+
