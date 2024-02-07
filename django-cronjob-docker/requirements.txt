@@ -1,4 +1,4 @@
-Django==3.2.23
+Django==3.2.24
 celery
 redis==3.5.3  # یا انتخاب یک بروکر دیگر مانند RabbitMQ
 gunicorn==21.2.0
